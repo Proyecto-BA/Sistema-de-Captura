@@ -25,6 +25,9 @@ class Covid(models.Model):
 
     id = models.AutoField(primary_key=True)
 
+    def Muertes(self):
+            return self.deaths
+            
     class Meta:
         managed = False
         db_table = 'country_wise_latest'
