@@ -3,6 +3,8 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
+from .models import Covid
+
 # Create your views here.
 def signup(request):
     if request.method == 'GET':
@@ -27,7 +29,6 @@ def signup(request):
             'error': 'Las contraseñas no coinciden'
         })
 
-
 def signin(request):
 
     if request.method =='GET':    
@@ -46,7 +47,15 @@ def signin(request):
             return redirect('inicio')
 
 def inicio(request):
-    return render(request,'inicio.html')
+    datos = []
+    #datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Albania"))
+    #datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Kuwait"))
+    datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Mexico").get() )
+    datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Peru").get() )
+    datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Chile").get() )
+    datos.append( Covid.objects.values_list("deaths",flat=True).filter(country_region="Colombia").get() )
+    print(datos)
+    return render(request,'inicio.html',{'datos': datos})
 
 def signout(request):
     logout(request)
